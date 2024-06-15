@@ -15,6 +15,10 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Rubik: require("../assets/fonts/Rubik-Regular.ttf"),
+    RubikBold: require("../assets/fonts/Rubik-Bold.ttf"),
+    RubikMedium: require("../assets/fonts/Rubik-Medium.ttf"),
+    RubikSemibold: require("../assets/fonts/Rubik-SemiBold.ttf"),
   });
 
   useEffect(() => {
@@ -30,12 +34,13 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <GestureHandlerRootView>
-
-        <Stack>
+        <Stack
+        >
           <Stack.Screen
             name='index'
             options={{ headerShown: false }}
           />
+          <Stack.Screen name='(auth)' options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>

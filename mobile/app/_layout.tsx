@@ -34,10 +34,10 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <GestureHandlerRootView>
-          <ToastProvider>
+    <ToastProvider>
+      <AuthProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <GestureHandlerRootView>
             <Stack
             >
               <Stack.Screen
@@ -49,9 +49,9 @@ export default function RootLayout() {
               <Stack.Screen name='product/[productId]' options={{ headerShown: false }} />
               <Stack.Screen name="+not-found" />
             </Stack>
-          </ToastProvider>
-        </GestureHandlerRootView>
-      </ThemeProvider>
-    </AuthProvider>
+          </GestureHandlerRootView>
+        </ThemeProvider>
+      </AuthProvider>
+    </ToastProvider>
   );
 }

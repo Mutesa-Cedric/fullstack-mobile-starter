@@ -1,16 +1,34 @@
 import CustomButton from '@/components/CustomButton'
 import CustomInput from '@/components/CustomInput'
+import useAuth from '@/hooks/useAuth'
+import { validateEmail } from '@/lib/utils'
 import { Link, useRouter } from 'expo-router'
 import React, { useState } from 'react'
 import { Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useToast } from 'react-native-toast-notifications'
 
 const Login = () => {
     const router = useRouter();
+    const toast = useToast();
+    const { loggingIn, login } = useAuth();
     const [formData, setFormData] = useState({
         email: "",
         password: ""
     });
+    const handleSubmit = () => {
+        if (!formData.email || !formData.password) {
+            return toast.show("Please fill in all fields", {
+                type: 'danger'
+            });
+        }
+        if (!validateEmail(formData.email)) {
+            return toast.show("Please enter a valid email", {
+                type: 'danger'
+            });
+        }
+        login(formData.email, formData.password);
+    }
     return (
         <SafeAreaView>
             <View className='h-full  justify-center px-6'>
@@ -31,8 +49,9 @@ const Login = () => {
                 </View>
                 <CustomButton
                     title='Login'
-                    handlePress={() => router.push("/home")}
+                    handlePress={handleSubmit}
                     containerStyles='mt-8'
+                    isLoading={loggingIn}
                 />
                 <View className='flex flex-row gap-1 mt-3'>
                     <Text className='text-base'>Don't have an account?</Text>

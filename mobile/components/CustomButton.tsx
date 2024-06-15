@@ -12,6 +12,7 @@ interface CustomButtonProps {
 const CustomButton = ({ title, handlePress, variant = "primary", containerStyles, titleStyles, isLoading }: CustomButtonProps) => {
     return (
         <TouchableOpacity
+            disabled={isLoading}
             onPress={handlePress}
             className={`${variant === 'primary' ? "bg-cyan-500" : "bg-white border border-cyan-300"} w-full px-2 rounded-md flex flex-row justify-center items-center py-2 ${containerStyles}`}
         >

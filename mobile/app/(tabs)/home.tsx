@@ -4,6 +4,7 @@ import { faker } from "@faker-js/faker"
 import { Product } from '@/types';
 import CustomButton from '@/components/CustomButton';
 import { useRouter } from 'expo-router';
+import useAuth from '@/hooks/useAuth';
 
 const products: Product[] = Array.from({ length: 10 }, () => ({
   id: faker.string.uuid(),
@@ -13,6 +14,7 @@ const products: Product[] = Array.from({ length: 10 }, () => ({
 }))
 
 export default function HomeScreen() {
+  const { user } = useAuth();
   const router = useRouter();
   return (
     <SafeAreaView
@@ -40,7 +42,7 @@ export default function HomeScreen() {
         )}
         ListHeaderComponent={() => (
           <View className='mb-6'>
-            <Text className='text-xl text-gray-800 font-rubiksemibold'>Welcome, Mutesa Cedric</Text>
+            <Text className='text-xl text-gray-800 font-rubiksemibold'>Welcome, {user?.name}</Text>
             <Text className='text-gray-500 text-base'>Here are  the products you have created</Text>
           </View>
         )}

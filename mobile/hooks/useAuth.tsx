@@ -65,10 +65,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 type: "success",
             });
             router.push("/home");
-        } catch (error) {
-            toast.show("An error occurred", {
-                type: "error",
-            });
+        } catch (error: any) {
+            console.log(error);
+            if (error.response.status === 400) {
+                toast.show("Invalid email or password", {
+                    type: "danger",
+                });
+            } else {
+
+                toast.show("An error occurred", {
+                    type: "danger",
+                });
+            }
         } finally {
             setLoggingIn(false);
         }

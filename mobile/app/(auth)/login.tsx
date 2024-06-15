@@ -1,11 +1,12 @@
 import CustomButton from '@/components/CustomButton'
 import CustomInput from '@/components/CustomInput'
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import React, { useState } from 'react'
 import { Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Login = () => {
+    const router = useRouter();
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -30,7 +31,7 @@ const Login = () => {
                 </View>
                 <CustomButton
                     title='Login'
-                    handlePress={() => { }}
+                    handlePress={() => router.push("/home")}
                     containerStyles='mt-8'
                 />
                 <View className='flex flex-row gap-1 mt-3'>

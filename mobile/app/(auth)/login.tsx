@@ -14,7 +14,7 @@ const Login = () => {
         <SafeAreaView>
             <View className='h-full  justify-center px-6'>
                 <Text className='text-2xl font-semibold'>Login to your account</Text>
-                <Text className='text-gray-500 text-base pt-2'>Enter your email and password below</Text>
+                <Text className='text-gray-500 text-base'>Enter your email and password below</Text>
                 <View className='w-full mt-10'>
                     <CustomInput
                         label='Email'

@@ -1,10 +1,11 @@
 import CustomButton from '@/components/CustomButton';
-import { useRouter } from 'expo-router'
-import React from 'react'
-import { Image, SafeAreaView, Text, View } from 'react-native'
+import useAuth from '@/hooks/useAuth';
+import React from 'react';
+import { Image, SafeAreaView, Text, View } from 'react-native';
 
 export default function Profile() {
-    const router = useRouter();
+    const { loggingOut, logout } = useAuth();
+
     return (
         <SafeAreaView className='bg-white h-full'>
             <View className='px-6'>
@@ -17,7 +18,8 @@ export default function Profile() {
                 </Text>
                 <CustomButton
                     title='Logout'
-                    handlePress={() => router.push('/login')}
+                    isLoading={loggingOut}
+                    handlePress={logout}
                     containerStyles='mt-8 border-red-500'
                     variant='outline'
                     titleStyles='text-red-500'

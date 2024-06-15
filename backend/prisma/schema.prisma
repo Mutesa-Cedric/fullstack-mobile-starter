@@ -26,5 +26,4 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   userId      String
-  image       String
 }

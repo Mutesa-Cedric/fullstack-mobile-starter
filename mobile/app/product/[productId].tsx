@@ -1,22 +1,73 @@
 import CustomButton from '@/components/CustomButton';
 import CustomInput from '@/components/CustomInput';
+import useProducts from '@/hooks/useProducts';
+import { Product } from '@/types';
 import Ioicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { usePathname, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useToast } from 'react-native-toast-notifications';
 
 const ProductView = () => {
+    const toast = useToast();
+    const pathname = usePathname();
+    const { products, updateProduct, updatingProduct, deleteProduct, deletingProduct } = useProducts();
     const router = useRouter();
+    const [product, setProduct] = useState<Product | null>(null);
     const [formData, setFormData] = useState({
-        name: 'my product',
-        description: 'this is a product',
-        price: 12
+        name: '',
+        description: '',
+        price: 0
     });
 
+    useEffect(() => {
+        if (pathname) {
+            const id = pathname.split('/')[2];
+            const product = products?.find((p) => p.id === id);
+            if (product) {
+                setProduct(product);
+                setFormData({
+                    name: product.name,
+                    description: product.description,
+                    price: product.price
+                });
+            } else {
+                setTimeout(() => {
+                    router.push('/home');
+                }, 1000);
+            }
+        }
+    }, [pathname]);
+
+    const handleSubmit = () => {
+        if (!formData.name || !formData.description || !formData.price) {
+            return toast.show("Please fill in all fields", {
+                type: 'danger'
+            });
+        }
+        if (formData.price < 1) {
+            return toast.show("Price must be greater than 0", {
+                type: 'danger'
+            });
+        }
+        // check if something changed
+        if (formData.name === product?.name && formData.description === product?.description && formData.price === product?.price) {
+            return toast.show("No changes detected", {
+                type: 'info'
+            });
+        }
+        updateProduct({
+            ...formData,
+            id: product?.id as string
+        }, true);
+
+    }
+
+    if (!product) return null
     return (
         <SafeAreaView className='bg-white h-full p-3'>
-            <View className='flex-row justify-between'>
+            <View className='flex-row justify-between' >
                 <TouchableOpacity
                     onPress={() => router.push('/home')}
                     className='flex-row items-center h-fit'>
@@ -24,13 +75,14 @@ const ProductView = () => {
                     <Text>Back to products</Text>
                 </TouchableOpacity>
                 <CustomButton
-                    handlePress={() => console.log('delete')}
+                    isLoading={deletingProduct}
+                    handlePress={() => deleteProduct(product.id, true)}
                     title='Delete'
                     variant='outline'
                     titleStyles='text-red-500'
                     containerStyles='border-red-500 w-32 py-1'
                 />
-            </View>
+            </View >
             <View className='mt-6'>
                 <Text className='text-xl font-rubiksemibold text-gray-800'>Product Details</Text>
                 <View className='mb-5 mt-4'>
@@ -60,8 +112,9 @@ const ProductView = () => {
                     />
                 </View>
                 <CustomButton
+                    isLoading={updatingProduct}
                     title='Update Product'
-                    handlePress={() => console.log(formData)}
+                    handlePress={handleSubmit}
                     containerStyles='mt-8'
                 />
             </View>

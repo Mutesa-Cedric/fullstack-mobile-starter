@@ -1,20 +1,15 @@
-import { FlatList, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { faker } from "@faker-js/faker"
-import { Product } from '@/types';
 import CustomButton from '@/components/CustomButton';
-import { useRouter } from 'expo-router';
 import useAuth from '@/hooks/useAuth';
+import useProducts from '@/hooks/useProducts';
+import { useRouter } from 'expo-router';
+import { FlatList, Image, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const products: Product[] = Array.from({ length: 10 }, () => ({
-  id: faker.string.uuid(),
-  name: faker.commerce.productName(),
-  description: faker.commerce.productDescription(),
-  price: parseInt(faker.commerce.price()),
-}))
 
 export default function HomeScreen() {
   const { user } = useAuth();
+  const { products } = useProducts();
+
   const router = useRouter();
   return (
     <SafeAreaView
@@ -23,7 +18,14 @@ export default function HomeScreen() {
       <FlatList
         data={products}
         ListEmptyComponent={() => (
-          <Text className='text-center text-gray-500'>No products available</Text>
+          <View className='h-full justify-center items-center bg-gray-50 rounded-lg'>
+            <Image
+              source={require('../../assets/images/no-data.png')}
+              style={{ width: 200, height: 200 }}
+              className='rounded-lg'
+            />
+            <Text className='text-lg text-gray-700 pt-3 '>You haven't created any products</Text>
+          </View>
         )}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (

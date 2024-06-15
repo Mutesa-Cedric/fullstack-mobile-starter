@@ -1,15 +1,35 @@
 import CustomButton from '@/components/CustomButton'
 import CustomInput from '@/components/CustomInput'
+import useProducts from '@/hooks/useProducts'
 import React, { useState } from 'react'
 import { Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useToast } from 'react-native-toast-notifications'
 
 const AddProduct = () => {
+    const toast = useToast();
+    const { createProduct, creatingProduct } = useProducts();
+
     const [formData, setFormData] = useState({
         name: '',
         description: '',
         price: 0
     });
+
+    const handleSubmit = () => {
+        if (!formData.name || !formData.description || !formData.price) {
+            return toast.show("Please fill in all fields", {
+                type: 'danger'
+            });
+        }
+        if (formData.price < 1) {
+            return toast.show("Price must be greater than 0", {
+                type: 'danger'
+            });
+        }
+        createProduct(formData, true);
+    }
+
     return (
         <SafeAreaView className='p-3 px-5 h-full justify-center'>
             <View>
@@ -44,7 +64,8 @@ const AddProduct = () => {
             </View>
             <CustomButton
                 title='Add Product'
-                handlePress={() => console.log(formData)}
+                handlePress={handleSubmit}
+                isLoading={creatingProduct}
                 containerStyles='mt-8'
             />
         </SafeAreaView>

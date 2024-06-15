@@ -8,7 +8,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ToastProvider } from 'react-native-toast-notifications';
-import { AuthProvider } from '@/hooks/useAuth';
+import useAuth, { AuthProvider } from '@/hooks/useAuth';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

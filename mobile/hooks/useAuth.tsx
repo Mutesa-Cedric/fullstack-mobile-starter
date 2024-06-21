@@ -72,8 +72,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     type: "danger",
                 });
             } else {
-
-                toast.show("An error occurred", {
+                toast.show(error?.response?.data?.message ?? "An error occurred", {
                     type: "danger",
                 });
             }
@@ -93,11 +92,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             toast.show("Registered successfully", {
                 type: "success",
             });
-            setUser(data.user);
-            AsyncStorage.setItem("token", data.token);
-            router.push("/home");
-        } catch (error) {
-            toast.show("An error occurred", {
+            router.push("/login");
+        } catch (error: any) {
+            toast.show(error?.response?.data?.message ?? "An error occurred", {
                 type: "error",
             });
         } finally {
@@ -109,7 +106,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const logout = async () => {
         setLoggingOut(true);
         try {
-            await axios.get("/users/logout");
             setUser(null);
             AsyncStorage.removeItem("token");
             toast.show("Logged out successfully", {

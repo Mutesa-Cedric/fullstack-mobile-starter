@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useToast } from 'react-native-toast-notifications'
+import { validateProduct } from '@/lib/utils'
 
 const AddProduct = () => {
     const toast = useToast();
@@ -22,8 +23,19 @@ const AddProduct = () => {
                 type: 'danger'
             });
         }
-        if (formData.price < 1) {
-            return toast.show("Price must be greater than 0", {
+        const validationResults = validateProduct(formData);
+        if (!validationResults.name.valid) {
+            return toast.show(validationResults.name.message, {
+                type: 'danger'
+            });
+        }
+        if (!validationResults.description.valid) {
+            return toast.show(validationResults.description.message, {
+                type: 'danger'
+            });
+        }
+        if (!validationResults.price.valid) {
+            return toast.show(validationResults.price.message, {
                 type: 'danger'
             });
         }

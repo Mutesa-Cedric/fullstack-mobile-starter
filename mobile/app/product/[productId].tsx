@@ -32,11 +32,12 @@ const ProductView = () => {
                     description: product.description,
                     price: product.price
                 });
-            } else {
-                setTimeout(() => {
-                    router.push('/home');
-                }, 1000);
-            }
+            } 
+            // else {
+            //     setTimeout(() => {
+            //         router.push('/home');
+            //     }, 1000);
+            // }
         }
     }, [pathname]);
 

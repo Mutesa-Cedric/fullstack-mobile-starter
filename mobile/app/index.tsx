@@ -6,7 +6,7 @@ import { Image, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Onboarding = () => {
-    const { user } = useAuth();
+    const { user,logout } = useAuth();
     const router = useRouter();
     return (
         <SafeAreaView
@@ -24,14 +24,25 @@ const Onboarding = () => {
                         className='w-[240px] h-[240px]'
                     />
                     <Text className='text-2xl font-bold font-rubik'>Welcome to our app</Text>
-                    <Text className='text-center text-lg text-gray-500 py-4 '>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, at, iusto repellendus eveniet error odio </Text>
+                    <Text className='text-center text-lg text-gray-500 py-4 '>
+                        Already logged in as <Text className='text-black font-semibold text-cyan-600'>{user?.name}</Text>
+                    </Text>
                     {
                         user ?
+                        <View className='w-full mt-6'>
                             <CustomButton
                                 title='Go to Home'
                                 handlePress={() => router.push("/home")}
-                                containerStyles='mt-6'
+                                containerStyles='mb-3'
                             />
+                            <CustomButton
+                                title='Logout'
+                                handlePress={logout}
+                                variant='outline'
+                                containerStyles='mt-3 border-red-500'
+                                titleStyles=' text-red-500'
+                            />
+                        </View>
                             :
                             <View className='w-full mt-6'>
                                 <CustomButton

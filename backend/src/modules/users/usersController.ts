@@ -19,7 +19,7 @@ export default class UserController {
             });
             if (existingUser) {
                 return res.status(400).json({
-                    message: "User already exists",
+                    message: "User with that email already exists",
                 });
             }
             const newUser = await prisma.user.create({

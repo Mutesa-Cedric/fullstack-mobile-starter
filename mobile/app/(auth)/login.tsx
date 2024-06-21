@@ -1,7 +1,7 @@
 import CustomButton from '@/components/CustomButton'
 import CustomInput from '@/components/CustomInput'
 import useAuth from '@/hooks/useAuth'
-import { validateEmail } from '@/lib/utils'
+import { validateEmail, validatePassword } from '@/lib/utils'
 import { Link, useRouter } from 'expo-router'
 import React, { useState } from 'react'
 import { Text, View } from 'react-native'
@@ -9,7 +9,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useToast } from 'react-native-toast-notifications'
 
 const Login = () => {
-    const router = useRouter();
     const toast = useToast();
     const { loggingIn, login } = useAuth();
     const [formData, setFormData] = useState({
@@ -24,6 +23,11 @@ const Login = () => {
         }
         if (!validateEmail(formData.email)) {
             return toast.show("Please enter a valid email", {
+                type: 'danger'
+            });
+        }
+        if(!validatePassword(formData.password)){
+            return toast.show("Password must be at least 4 characters", {
                 type: 'danger'
             });
         }
